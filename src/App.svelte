@@ -1,19 +1,50 @@
 <script>
-	export let name;
+	import PlayerName from "./PlayerName.svelte";
+	import RoleList from "./RoleList.svelte";
+	let playersAmount = 1;
+	let players = [""];
+	let finalPlayers;
+	let numberIsChosen = false;
+function refreshPlayer(){
+	players.length = playersAmount
+	players = players;
+
+}
+
+function submitPlayers(){
+	
+		
+	finalPlayers = players;
+	console.log(finalPlayers)
+	numberIsChosen = true
+
+		
+
+}
+	
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<h1>Ktoś dzisiaj zginie!</h1>
+{#if numberIsChosen}
+<RoleList finalPlayersAmount = {finalPlayers.length} bind:finalPlayers = {finalPlayers}/>
+
+{:else}
+<form on:submit={submitPlayers}>
+<label for="playerCounter"> Podaj liczbę graczy</label>
+<input type="number" name = "playerCounter" bind:value={playersAmount} min="1" on:change={refreshPlayer}>
+{#each players as player, i}
+	<PlayerName playerNumber={i} bind:playerName={player} />
+{/each}
+<button type="submit">Dalej</button>
+</form>
+{/if}
+
+
+
+
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+	
 
 	h1 {
 		color: #ff3e00;
@@ -23,8 +54,6 @@
 	}
 
 	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+		
 	}
 </style>
